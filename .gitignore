@@ -1,0 +1,6 @@
+a.out
+*.o
+obj
+pipex
+push_swap
+*file*

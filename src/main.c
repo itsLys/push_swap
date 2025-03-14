@@ -36,12 +36,27 @@ int ft_strisdecimal(char *str)
 	return !(*str);
 }
 
+#define GET 0
+int	set_stack(int num, int flag, t_data *data)
+{
+	static int tmp_arr[1024];
+	static int i;
+	if (i == 1024 )
+	{
+
+		i = 0;
+	}
+	tmp_arr[i++] = num;
+
+}
+
 int main(int ac, char **av)
 {
 	if (ac == 1)
 		return FAILIURE;
 	int i = 1;
 	int j;
+	int x = 0;
 	char **tokens;
 	t_data	*data;
 	data = ft_calloc(1, sizeof(t_data));
@@ -51,9 +66,10 @@ int main(int ac, char **av)
 	{
 		j = 0;
 		tokens = ft_tokenize(av[i]);
+		if (tokens[j] == NULL)
+			return FAILIURE;
 		while (tokens[j])
 		{
-			printf("str is empty:\"%s\"	%d\n", tokens[j], ft_strisempty(tokens[j]));
 			if (ft_strisempty(tokens[j]))
 			{
 				return FAILIURE;
@@ -62,7 +78,7 @@ int main(int ac, char **av)
 			{
 				return FAILIURE;
 			}
-			printf("token	%s\n", tokens[j]);
+			set_stack(ft_atoi(tokens[j]), data);
 			j++;
 		}
 		i++;
@@ -70,6 +86,9 @@ int main(int ac, char **av)
 	}
 
 }
+// NOTE:
+// store in a temporary array, when the array is full, 
+// 	allocate and reallocate and store from beggining
 
 //  1 4 3 5
 //  "5 4 3 2 1"

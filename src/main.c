@@ -4,18 +4,18 @@
 #include <stdlib.h>
 
 #define VALUE 0
-#define RANK 1
-typedef struct s_stack
-{
-	int    *stack[2];
-	int		size;
-}
-t_stack;
+#define INDEX 1
+// typedef struct s_stack
+// {
+// 	int	*values;
+// 	int size;
+// }
+// t_frame;
 
 typedef struct s_data
 {
-	t_stack stack_a;
-	t_stack stack_b;
+	t_list **stack_a;
+	t_list **stack_b;
 	int     *sroted;
 }        t_data;
 
@@ -36,32 +36,31 @@ int ft_strisdecimal(char *str)
 	return !(*str);
 }
 
-#define GET 0
-int	set_stack(int num, int flag, t_data *data)
+void	push(t_list **stack, int value, t_data *data)
 {
-	static int tmp_arr[1024];
-	static int i;
-	if (i == 1024 )
-	{
+	int *val_p;
 
-		i = 0;
-	}
-	tmp_arr[i++] = num;
-
+	val_p = malloc(sizeof(int));
+	if (val_p == NULL)
+		return ;
+	*val_p = value;
+	ft_lstadd_back(stack, ft_lstnew(val_p));
 }
 
 int main(int ac, char **av)
 {
-	if (ac == 1)
-		return FAILIURE;
 	int i = 1;
 	int j;
-	int x = 0;
 	char **tokens;
 	t_data	*data;
+
+	if (ac == 1)
+		return FAILIURE;
 	data = ft_calloc(1, sizeof(t_data));
 	if (data == NULL)
 		return FAILIURE;
+	data->stack_a = ft_calloc(1, sizeof(t_list *));
+	data->stack_b = ft_calloc(1, sizeof(t_list *));
 	while (i < ac)
 	{
 		j = 0;
@@ -78,12 +77,19 @@ int main(int ac, char **av)
 			{
 				return FAILIURE;
 			}
-			set_stack(ft_atoi(tokens[j]), data);
+			push(data->stack_a, ft_atoi(tokens[j]), data);
 			j++;
 		}
 		i++;
 		ft_free_vector(tokens);
 	}
+	t_list *member = *(data->stack_a);
+	while (member)
+	{
+		printf("%d, ", *((int *) member->content));
+		member = member->next;
+	}
+	printf("\n");
 
 }
 // NOTE:

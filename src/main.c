@@ -2,6 +2,7 @@
 #include "push_swap.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #define VALUE 0
 #define INDEX 1
@@ -36,22 +37,70 @@ int ft_strisdecimal(char *str)
 	return !(*str);
 }
 
+void	exit_program(int status, t_data *data)
+{
+	ft_lstclear(data->stack_a, free);
+	ft_lstclear(data->stack_b, free);
+	free(data->stack_a);
+	free(data->stack_b);
+	free(data);
+	exit(status);
+}
+
+void	handle_error(t_data *data)
+{
+	write(STDERR, "Error\n", 6);
+	exit_program(FAILIURE, data);
+}
+
 void	push(t_list **stack, int value, t_data *data)
 {
 	int *val_p;
+	t_list *node;
 
 	val_p = malloc(sizeof(int));
 	if (val_p == NULL)
 		return ;
 	*val_p = value;
-	ft_lstadd_back(stack, ft_lstnew(val_p));
+
+	node = ft_lstnew(val_p);
+	if (node == NULL)
+		exit_program(FAILIURE, data);
+	ft_lstadd_back(stack, node);
+}
+
+void parse_args(int ac, char **av, t_data *data)
+{
+	int	i;
+	int	j;
+	char **tokens;
+
+	i = 1;
+	while (i < ac)
+	{
+		j = 0;
+		tokens = ft_tokenize(av[i]);
+		if (tokens == NULL || tokens[j] == NULL)
+			exit_program(FAILIURE, data);
+		while (tokens[j])
+		{
+			// WARN: Recheak this, str is empty;
+			if (ft_strisdecimal(tokens[j]) == FALSE)
+			{
+				free(tokens[j]);
+				free(tokens);
+				exit_program(FAILIURE, data);
+			}
+			push(data->stack_a, ft_atoi(tokens[j]), data);
+			free(tokens[j++]);
+		}
+		i++;
+		free(tokens);
+	}
 }
 
 int main(int ac, char **av)
 {
-	int i = 1;
-	int j;
-	char **tokens;
 	t_data	*data;
 
 	if (ac == 1)
@@ -61,28 +110,9 @@ int main(int ac, char **av)
 		return FAILIURE;
 	data->stack_a = ft_calloc(1, sizeof(t_list *));
 	data->stack_b = ft_calloc(1, sizeof(t_list *));
-	while (i < ac)
-	{
-		j = 0;
-		tokens = ft_tokenize(av[i]);
-		if (tokens[j] == NULL)
-			return FAILIURE;
-		while (tokens[j])
-		{
-			if (ft_strisempty(tokens[j]))
-			{
-				return FAILIURE;
-			}
-			if (!ft_strisdecimal(tokens[j]))
-			{
-				return FAILIURE;
-			}
-			push(data->stack_a, ft_atoi(tokens[j]), data);
-			j++;
-		}
-		i++;
-		ft_free_vector(tokens);
-	}
+	if (data->stack_a == NULL || data->stack_b == NULL)
+		exit_program(FAILIURE, data);
+	parse_args(ac, av, data);
 	t_list *member = *(data->stack_a);
 	while (member)
 	{
@@ -90,10 +120,11 @@ int main(int ac, char **av)
 		member = member->next;
 	}
 	printf("\n");
+	exit_program(SUCCESS, data);
 
 }
 // NOTE:
-// store in a temporary array, when the array is full, 
+// store in a temporary array, when the array is full,
 // 	allocate and reallocate and store from beggining
 
 //  1 4 3 5

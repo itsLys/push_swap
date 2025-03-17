@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define VALUE 0
-#define INDEX 1
+// #define VALUE 0
+// #define INDEX 1
 // typedef struct s_stack
 // {
 // 	int	*values;
@@ -79,7 +79,7 @@ void parse_args(int ac, char **av, t_data *data)
 	while (i < ac)
 	{
 		j = 0;
-		tokens = ft_tokenize(av[i]);
+		tokens = ft_split(av[i], ' ');
 		if (tokens == NULL || tokens[j] == NULL)
 			exit_program(FAILIURE, data);
 		while (tokens[j])

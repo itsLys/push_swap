@@ -37,8 +37,10 @@ int ft_strisdecimal(char *str)
 	return !(*str);
 }
 
-void	exit_program(int status, t_data *data)
+void	exit_program(int status, void **list, t_data *data)
 {
+	while (*list)
+		free(*(list++));
 	ft_lstclear(data->stack_a, free);
 	ft_lstclear(data->stack_b, free);
 	free(data->stack_a);
@@ -47,10 +49,11 @@ void	exit_program(int status, t_data *data)
 	exit(status);
 }
 
-void	handle_error(t_data *data)
+#define EMPTY (void *[]) {NULL}
+void	handle_error(void **list, t_data *data)
 {
 	write(STDERR, "Error\n", 6);
-	exit_program(FAILIURE, data);
+	exit_program(FAILIURE, list, data);
 }
 
 void	push(t_list **stack, int value, t_data *data)
@@ -65,7 +68,7 @@ void	push(t_list **stack, int value, t_data *data)
 
 	node = ft_lstnew(val_p);
 	if (node == NULL)
-		exit_program(FAILIURE, data);
+		exit_program(FAILIURE, EMPTY, data);
 	ft_lstadd_back(stack, node);
 }
 
@@ -81,19 +84,11 @@ void parse_args(int ac, char **av, t_data *data)
 		j = 0;
 		tokens = ft_split(av[i], ' ');
 		if (tokens == NULL || tokens[j] == NULL)
-		{
-			free(tokens);
-			exit_program(FAILIURE, data);
-		}
+			handle_error((void *[]){tokens, NULL}, data);
 		while (tokens[j])
 		{
-			// WARN: Recheak this, str is empty;
 			if (ft_strisdecimal(tokens[j]) == FALSE)
-			{
-				free(tokens[j]);
-				free(tokens);
-				exit_program(FAILIURE, data);
-			}
+				handle_error((void *[]) {tokens[j], tokens, NULL}, data);
 			push(data->stack_a, ft_atoi(tokens[j]), data);
 			free(tokens[j++]);
 		}
@@ -104,8 +99,6 @@ void parse_args(int ac, char **av, t_data *data)
 
 int main(int ac, char **av)
 {
-	int *s = malloc(5);
-	s = NULL;
 	t_data	*data;
 
 	if (ac == 1)
@@ -116,7 +109,7 @@ int main(int ac, char **av)
 	data->stack_a = ft_calloc(1, sizeof(t_list *));
 	data->stack_b = ft_calloc(1, sizeof(t_list *));
 	if (data->stack_a == NULL || data->stack_b == NULL)
-		exit_program(FAILIURE, data);
+		exit_program(FAILIURE, EMPTY, data);
 	parse_args(ac, av, data);
 	t_list *member = *(data->stack_a);
 	while (member)
@@ -125,7 +118,7 @@ int main(int ac, char **av)
 		member = member->next;
 	}
 	printf("\n");
-	exit_program(SUCCESS, data);
+	exit_program(SUCCESS, EMPTY, data);
 
 }
 // NOTE:

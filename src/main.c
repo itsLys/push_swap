@@ -81,7 +81,10 @@ void parse_args(int ac, char **av, t_data *data)
 		j = 0;
 		tokens = ft_split(av[i], ' ');
 		if (tokens == NULL || tokens[j] == NULL)
+		{
+			free(tokens);
 			exit_program(FAILIURE, data);
+		}
 		while (tokens[j])
 		{
 			// WARN: Recheak this, str is empty;
@@ -101,6 +104,8 @@ void parse_args(int ac, char **av, t_data *data)
 
 int main(int ac, char **av)
 {
+	int *s = malloc(5);
+	s = NULL;
 	t_data	*data;
 
 	if (ac == 1)

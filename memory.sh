@@ -4,7 +4,8 @@ shopt -s expand_aliases
 
 # alias vg_leak="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=42"
 # alias vg_mem="valgrind --expensive-definedness-checks=yes --error-exitcode=42"
-alias vg_all="valgrind --expensive-definedness-checks=yes --track-fds=yes --leak-check=full --show-leak-kinds=all --track-origins=yes  --error-exitcode=42"
+alias vg_all="valgrind --expensive-definedness-checks=yes --show-reachable=yes --track-fds=yes --leak-check=full --show-leak-kinds=all --track-origins=yes  --error-exitcode=42"
+
 
 
 alias basic_1="vg_all ./push_swap"                          # No input
@@ -29,13 +30,14 @@ for i in {1..16}; do
 	alias_name="basic_$i"
 	echo -e "${YELLOW}running $alias_name... ${RESET}"
 	${!alias_name} > /tmp/memory 2>&1
-	if [ $? -eq 42 ]; then
+	echo $exit_status
+	if [[ $exit_status -eq 42 ]] || grep -q "still" /tmp/memory; then
 		echo -e "${RED}${BOLD}case $alias_name leaked!${RESET}"
 		echo -e "${RED}stopping the script!${RESET}"
 		break
 	else
 		echo -e "${GREEN}${BOLD}case $alias_name no leaks!${RESET}"
 	fi
-	< /tmp/memory cat
+	< /tmp/memory
 done
 

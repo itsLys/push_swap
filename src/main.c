@@ -4,14 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-// #define VALUE 0
-// #define INDEX 1
-// typedef struct s_stack
-// {
-// 	int	*values;
-// 	int size;
-// }
-// t_frame;
+#define INT_MAX (long) 0x7fffffff
+#define INT_MIN -INT_MAX - 1
 
 typedef struct s_data
 {
@@ -56,12 +50,12 @@ void	handle_error(void **list, t_data *data)
 	exit_program(FAILIURE, list, data);
 }
 
-void	push(t_list **stack, int value, t_data *data)
+void	push(t_list **stack, long value, t_data *data)
 {
-	int *val_p;
+	long *val_p;
 	t_list *node;
 
-	val_p = malloc(sizeof(int));
+	val_p = malloc(sizeof(long));
 	if (val_p == NULL)
 		return ;
 	*val_p = value;
@@ -72,29 +66,72 @@ void	push(t_list **stack, int value, t_data *data)
 	ft_lstadd_back(stack, node);
 }
 
-void parse_args(int ac, char **av, t_data *data)
+void	init_stack(char **vec, t_data *data)
+{
+	while (*vec)
+	{
+		if (ft_strisdecimal(*vec) == FALSE)
+			handle_error((void *[]) {*vec, vec, NULL}, data);
+		push(data->stack_a, ft_atol(*vec), data);
+		free(*(vec++));
+	}
+}
+
+int check_repitition(t_list **list)
+{
+	long	curr;
+	t_list	*node;
+
+	node = *list;
+	while (node)
+	{
+		curr = *((long *)node->content);
+		node = node->next;
+		while (node)
+		{
+			if (curr == *((long *)node->content))
+				return ERROR;
+			node = node->next;
+		}
+	}
+	return SUCCESS;
+}
+
+int check_values(t_list **list)
+{
+	long	value;
+	t_list	*node;
+
+	node = *list;
+	while (node)
+	{
+		value = *((long *)node->content);
+		if (value > INT_MAX || value < INT_MIN)
+			return ERROR;
+		node = node->next;
+	}
+	return SUCCESS;
+}
+
+void	parse_input(int ac, char **av, t_data *data)
 {
 	int	i;
-	int	j;
 	char **tokens;
 
 	i = 1;
 	while (i < ac)
 	{
-		j = 0;
 		tokens = ft_split(av[i], ' ');
-		if (tokens == NULL || tokens[j] == NULL)
+		if (tokens == NULL || tokens[0] == NULL)
 			handle_error((void *[]){tokens, NULL}, data);
-		while (tokens[j])
-		{
-			if (ft_strisdecimal(tokens[j]) == FALSE)
-				handle_error((void *[]) {tokens[j], tokens, NULL}, data);
-			push(data->stack_a, ft_atoi(tokens[j]), data);
-			free(tokens[j++]);
-		}
+		init_stack(tokens, data);
 		i++;
 		free(tokens);
 	}
+	if (check_repitition(data->stack_a) == ERROR )
+		handle_error(EMPTY, data);
+	if (check_values(data->stack_a) == ERROR)
+		handle_error(EMPTY, data);
 }
 
 int main(int ac, char **av)
@@ -110,31 +147,14 @@ int main(int ac, char **av)
 	data->stack_b = ft_calloc(1, sizeof(t_list *));
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, EMPTY, data);
-	parse_args(ac, av, data);
+	parse_input(ac, av, data);
 	t_list *member = *(data->stack_a);
 	while (member)
 	{
-		printf("%d, ", *((int *) member->content));
+		printf("%ld, ", *((long *) member->content));
 		member = member->next;
 	}
 	printf("\n");
 	exit_program(SUCCESS, EMPTY, data);
 
 }
-// NOTE:
-// store in a temporary array, when the array is full,
-// 	allocate and reallocate and store from beggining
-
-//  1 4 3 5
-//  "5 4 3 2 1"
-//
-//    13 15 32 "9 2 0" "4" 2 6 3"4" -1 " "
-//
-//    1 3 5 7 "45 54"
-//
-//    1 3 5 7 "45 54"
-//
-//
-//    stack_a: [x, 4, 6, 57, 99 ];    size_a = 4
-//    stack_b: [1];                    size_b
-//    push_a

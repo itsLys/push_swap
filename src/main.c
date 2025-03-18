@@ -27,12 +27,23 @@ int main(int ac, char **av)
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, EMPTY, data);
 	parse_input(ac, av, data);
-	t_list *node = *(data->stack_a);
-	while (node)
+	// sa(data);
+	pb(data);
+	t_list *node_a = *(data->stack_a);
+	t_list *node_b = *(data->stack_b);
+	printf("stack_a:	");
+	while (node_a)
 	{
-		printf("%ld, ", ((t_stack_item *)(node->content))->value);
-		node = node->next;
+		printf("%ld, ", ((t_stack_item *)(node_a->content))->value);
+		node_a = node_a->next;
 	}
+	printf("\n");
+	printf("stack_b:	");
+	// while (node_b)
+	// {
+	// 	printf("%ld, ", ((t_stack_item *)(node_b->content))->value);
+	// 	node_b = node_b->next;
+	// }
 	printf("\n");
 	exit_program(SUCCESS, EMPTY, data);
 

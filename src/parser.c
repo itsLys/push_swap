@@ -10,18 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "push_swap.h"
 #include <stdio.h>
 
-static void	init_stack(char **vec, t_data *data)
+static void	init_stacks(char **vec, t_data *data)
 {
 	while (*vec)
 	{
 		if (ft_strisdecimal(*vec) == FALSE)
 			handle_error((void *[]) {*vec, vec, NULL}, data);
-		push(data->stack_a, ft_atol(*vec), data);
+		add_to_list(data->stack_a, ft_atol(*vec), data);
 		free(*(vec++));
 	}
+	ft_lstadd_back(data->stack_b, NULL);
 }
 static int check_repitition(t_list **list)
 {
@@ -73,7 +75,7 @@ void	parse_input(int ac, char **av, t_data *data)
 		tokens = ft_split(av[i], ' ');
 		if (tokens == NULL || tokens[0] == NULL)
 			handle_error((void *[]){tokens, NULL}, data);
-		init_stack(tokens, data);
+		init_stacks(tokens, data);
 		i++;
 		free(tokens);
 	}

@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-void	push(t_list **stack, long value, t_data *data)
+void	add_to_list(t_list **stack, long value, t_data *data)
 {
 	t_stack_item	*item;
 	t_list			*node;

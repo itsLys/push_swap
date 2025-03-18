@@ -20,7 +20,14 @@ typedef struct s_data
 }        t_data;
 void	parse_input(int ac, char **av, t_data *data);
 void	exit_program(int status, void **list, t_data *data);
-void	push(t_list **stack, long value, t_data *data);
+void	add_to_list(t_list **stack, long value, t_data *data);
 void	handle_error(void **list, t_data *data);
+
+
+void	sa(t_data *data);
+void	sb(t_data *data);
+void	ss(t_data *data);
+void	pa(t_data *data);
+void	pb(t_data *data);
 #endif // !PUSH_SWAP_H
 

@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:11:34 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 09:13:12 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/19 09:40:00 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # define INT_MAX 0x7fffffffL
+// WARN: FIX
 # define INT_MIN -INT_MAX - 1
 # define EMPTY  \
 	(void *[]) \

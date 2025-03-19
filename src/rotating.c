@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:02:35 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 09:02:35 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/19 10:15:44 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,12 @@
 
 void	ra(t_data *data)
 {
-	t_list	*first;
-
-	if (ft_lstsize(*data->stack_a) <= 1)
-		return ;
-	first = *data->stack_a;
-	*data->stack_a = (*data->stack_a)->next;
-	ft_lstlast(*data->stack_a)->next = first;
-	first->next = NULL;
+	ft_lstrotate(data->stack_a);
 }
 
 void	rb(t_data *data)
 {
-	t_list	*first;
-
-	if (ft_lstsize(*data->stack_b) <= 1)
-		return ;
-	first = *data->stack_b;
-	*data->stack_b = (*data->stack_b)->next;
-	ft_lstlast(*data->stack_b)->next = first;
-	first->next = NULL;
+	ft_lstrotate(data->stack_b);
 }
 
 void	rr(t_data *data)

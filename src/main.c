@@ -13,6 +13,22 @@
 #include "push_swap.h"
 #include <stdio.h>
 
+// test function
+void	print_stack(t_list **stack, char c)
+{
+	t_list *node = *stack;
+	printf("stack %c:	[", c);
+	while (node)
+	{
+		printf("%ld", ((t_stack_item *)(node->content))->value);
+		node = node->next;
+		if (node)
+			printf(", ");
+	}
+	printf("]\n");
+
+}
+
 int main(int ac, char **av)
 {
 	t_data	*data;
@@ -27,24 +43,12 @@ int main(int ac, char **av)
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, EMPTY, data);
 	parse_input(ac, av, data);
-	// sa(data);
+
+	print_stack(data->stack_a, 'a');
+	print_stack(data->stack_b, 'b');
 	pb(data);
-	t_list *node_a = *(data->stack_a);
-	t_list *node_b = *(data->stack_b);
-	printf("stack_a:	");
-	while (node_a)
-	{
-		printf("%ld, ", ((t_stack_item *)(node_a->content))->value);
-		node_a = node_a->next;
-	}
-	printf("\n");
-	printf("stack_b:	");
-	// while (node_b)
-	// {
-	// 	printf("%ld, ", ((t_stack_item *)(node_b->content))->value);
-	// 	node_b = node_b->next;
-	// }
-	printf("\n");
+	print_stack(data->stack_a, 'a');
+	print_stack(data->stack_b, 'b');
 	exit_program(SUCCESS, EMPTY, data);
 
 }

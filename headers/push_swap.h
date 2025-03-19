@@ -20,7 +20,6 @@ typedef struct s_data
 }        t_data;
 void	parse_input(int ac, char **av, t_data *data);
 void	exit_program(int status, void **list, t_data *data);
-void	add_to_list(t_list **stack, long value, t_data *data);
 void	handle_error(void **list, t_data *data);
 
 

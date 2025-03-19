@@ -12,21 +12,6 @@
 
 #include "push_swap.h"
 
-void	add_to_list(t_list **stack, long value, t_data *data)
-{
-	t_stack_item	*item;
-	t_list			*node;
-
-	item = malloc(sizeof(t_stack_item));
-	if (item == NULL)
-		return ;
-	item->value = value;
-
-	node = ft_lstnew(item);
-	if (node == NULL)
-		exit_program(FAILIURE, EMPTY, data);
-	ft_lstadd_back(stack, node);
-}
 
 void	exit_program(int status, void **list, t_data *data)
 {

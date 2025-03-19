@@ -12,7 +12,6 @@
 
 #include "push_swap.h"
 
-
 void	exit_program(int status, void **list, t_data *data)
 {
 	while (*list)

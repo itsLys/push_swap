@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:46:20 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/18 07:49:32 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/19 09:10:06 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,25 @@ static void	add_to_list(t_list **stack, long value, t_data *data)
 	if (item == NULL)
 		return ;
 	item->value = value;
-
 	node = ft_lstnew(item);
 	if (node == NULL)
 		exit_program(FAILIURE, EMPTY, data);
 	ft_lstadd_back(stack, node);
 }
+
 static void	init_stacks(char **vec, t_data *data)
 {
 	while (*vec)
 	{
 		if (ft_strisdecimal(*vec) == FALSE)
-			handle_error((void *[]) {*vec, vec, NULL}, data);
+			handle_error((void *[]){*vec, vec, NULL}, data);
 		add_to_list(data->stack_a, ft_atol(*vec), data);
 		free(*(vec++));
 	}
 	ft_lstadd_back(data->stack_b, NULL);
 }
-static int check_repitition(t_list **list)
+
+static int	check_repitition(t_list **list)
 {
 	long	curr;
 	t_list	*node1;
@@ -53,17 +54,16 @@ static int check_repitition(t_list **list)
 		node2 = node1->next;
 		while (node2)
 		{
-
 			if (curr == ((t_stack_item *)(node2->content))->value)
-				return ERROR;
+				return (ERROR);
 			node2 = node2->next;
 		}
 		node1 = node1->next;
 	}
-	return SUCCESS;
+	return (SUCCESS);
 }
 
-static int check_values(t_list **list)
+static int	check_values(t_list **list)
 {
 	long	value;
 	t_list	*node;
@@ -73,16 +73,16 @@ static int check_values(t_list **list)
 	{
 		value = ((t_stack_item *)(node->content))->value;
 		if (value > INT_MAX || value < INT_MIN)
-			return ERROR;
+			return (ERROR);
 		node = node->next;
 	}
-	return SUCCESS;
+	return (SUCCESS);
 }
 
 void	parse_input(int ac, char **av, t_data *data)
 {
-	int	i;
-	char **tokens;
+	int		i;
+	char	**tokens;
 
 	i = 1;
 	while (i < ac)
@@ -94,7 +94,7 @@ void	parse_input(int ac, char **av, t_data *data)
 		i++;
 		free(tokens);
 	}
-	if (check_repitition(data->stack_a) == ERROR )
+	if (check_repitition(data->stack_a) == ERROR)
 		handle_error(EMPTY, data);
 	if (check_values(data->stack_a) == ERROR)
 		handle_error(EMPTY, data);

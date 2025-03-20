@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:46:20 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 09:10:06 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/20 08:30:41 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ static void	add_to_list(t_list **stack, long value, t_data *data)
 	ft_lstadd_back(stack, node);
 }
 
-static void	init_stacks(char **vec, t_data *data)
-{
-	while (*vec)
-	{
-		if (ft_strisdecimal(*vec) == FALSE)
-			handle_error((void *[]){*vec, vec, NULL}, data);
-		add_to_list(data->stack_a, ft_atol(*vec), data);
-		free(*(vec++));
-	}
-	ft_lstadd_back(data->stack_b, NULL);
-}
 
 static int	check_repitition(t_list **list)
 {
@@ -54,6 +43,7 @@ static int	check_repitition(t_list **list)
 		node2 = node1->next;
 		while (node2)
 		{
+			// NOTE: use get_value()
 			if (curr == ((t_stack_item *)(node2->content))->value)
 				return (ERROR);
 			node2 = node2->next;
@@ -71,12 +61,31 @@ static int	check_values(t_list **list)
 	node = *list;
 	while (node)
 	{
+		// NOTE: use get_value()
 		value = ((t_stack_item *)(node->content))->value;
 		if (value > INT_MAX || value < INT_MIN)
 			return (ERROR);
 		node = node->next;
 	}
 	return (SUCCESS);
+}
+
+static void	init_stacks(char **vec, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (vec[i])
+	{
+		if (ft_strisdecimal(vec[i]) == FALSE)
+		{
+			ft_free_vector(vec);
+			handle_error(NULL, data);
+		}
+		add_to_list(data->stack_a, ft_atol(vec[i]), data);
+		i++;
+	}
+	ft_lstadd_back(data->stack_b, NULL);
 }
 
 void	parse_input(int ac, char **av, t_data *data)
@@ -92,7 +101,7 @@ void	parse_input(int ac, char **av, t_data *data)
 			handle_error((void *[]){tokens, NULL}, data);
 		init_stacks(tokens, data);
 		i++;
-		free(tokens);
+		ft_free_vector(tokens);
 	}
 	if (check_repitition(data->stack_a) == ERROR)
 		handle_error(EMPTY, data);

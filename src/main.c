@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:44:09 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 10:23:55 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/20 08:18:40 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	print_stack(t_list **stack, char c)
 	printf("]\n");
 }
 
+
 int	main(int ac, char **av)
 {
 	t_data	*data;
@@ -45,7 +46,7 @@ int	main(int ac, char **av)
 		exit_program(FAILIURE, EMPTY, data);
 	parse_input(ac, av, data);
 	print_stack(data->stack_a, 'a');
-	rra(data);
+	sort(data);
 	print_stack(data->stack_a, 'a');
 	exit_program(SUCCESS, EMPTY, data);
 }

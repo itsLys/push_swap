@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:11:34 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 09:40:00 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/03/20 08:16:04 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,7 @@ void		rr(t_data *data);
 void		rra(t_data *data);
 void		rrb(t_data *data);
 void		rrr(t_data *data);
+
+void sort_3(t_data *data);
+void	sort(t_data *data);
 #endif // !PUSH_SWAP_H

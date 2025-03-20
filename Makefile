@@ -15,6 +15,7 @@ LIBFT		= $(addprefix $(LIBFT_DIR)/, libft.a)
 SRC_DIR		= src
 BONUS_DIR	= src_bonus
 SRC			= main.c \
+			  sort.c \
 			  parser.c \
 			  pushing.c \
 			  reverse_rotating.c \

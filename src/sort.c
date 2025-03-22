@@ -12,11 +12,10 @@
 
 #include "libft.h"
 #include "push_swap.h"
-#include <stdio.h>
 
 int	get_value(t_list *node)
 {
-	return *(int *) node->content;
+	return ((t_stack_item *) node->content)->value;
 }
 
 t_list *find_highest(t_list *list)
@@ -54,12 +53,21 @@ void sort_3(t_data *data)
 		ra(data);
 	else if ((*stack_a)->next == highest)
 		rra(data);
-	if (get_value((*stack_a)) > get_value((*stack_a)->next))
-		sa(data);
+	sort_2(data);
 }
 
+// NOTE: no more then 12 actions allowed
 void sort_5(t_data *data)
 {
+	t_list *node;
+
+	while (ft_lstsize(*data->stack_a) != 3)
+		pb(data);
+	node = *data->stack_b;
+	while (set_target_node(*data->stack_a, *data->stack_b))
+	{
+
+	}
 
 }
 
@@ -69,9 +77,12 @@ void	sort(t_data *data)
 		return ;
 	else if (data->size == 2)
 		sort_2(data);
-	else if (data->size == 3)
+	else if (data->size <= 3)
 		sort_3(data);
 	else if (data->size <= 5)
 		sort_5(data);
 
 }
+// push all elements in a to b until 3 nodes are in a
+// each node gets atarget node, which is bigger then b but the smallest bigger
+// and the biggest node gets as target the smallest node

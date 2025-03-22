@@ -39,12 +39,12 @@ static int	check_repitition(t_list **list)
 	node1 = *list;
 	while (node1)
 	{
-		curr = ((t_stack_item *)(node1->content))->value;
+		curr = get_value(node1);
 		node2 = node1->next;
 		while (node2)
 		{
 			// NOTE: use get_value()
-			if (curr == ((t_stack_item *)(node2->content))->value)
+			if (curr == get_value(node2))
 				return (ERROR);
 			node2 = node2->next;
 		}
@@ -62,7 +62,7 @@ static int	check_values(t_list **list)
 	while (node)
 	{
 		// NOTE: use get_value()
-		value = ((t_stack_item *)(node->content))->value;
+		value = get_value(node);
 		if (value > INT_MAX || value < INT_MIN)
 			return (ERROR);
 		node = node->next;

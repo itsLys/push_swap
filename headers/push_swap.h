@@ -38,6 +38,7 @@ typedef struct s_data
 void		parse_input(int ac, char **av, t_data *data);
 void		exit_program(int status, void **list, t_data *data);
 void		handle_error(void **list, t_data *data);
+int	get_value(t_list *node);
 
 void		sa(t_data *data);
 void		sb(t_data *data);

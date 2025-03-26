@@ -21,15 +21,16 @@ void	print_stack(t_stack **stack, char c)
 	t_stack	*node;
 
 	node = *stack;
-	printf("stack %c:	[", c);
+	printf("stack %c:	\n", c);
 	while (node)
 	{
-		printf("%ld", node->value);
+		printf("%d", node->index);
+		printf(" %ld\n", node->value);
 		node = node->next;
-		if (node)
-			printf(", ");
+		// if (node)
+		// 	printf(", ");
 	}
-	printf("]\n");
+	printf("\n");
 }
 
 void	exit_program(int status, void **list, t_data *data)
@@ -162,6 +163,7 @@ void	init_sorted(t_data *data)
 	int j;
 	t_stack *node;
 
+	data->sorted = malloc(sizeof(int) * data->size);
 	node = *data->stack_a;
 	i = 0;
 	while (i < data->size)
@@ -179,6 +181,24 @@ void	init_sorted(t_data *data)
 				ft_swap(data->sorted + i, data->sorted + j);
 			j++;
 		}
+		i++;
+	}
+}
+
+void	set_index(t_data *data)
+{
+	int i;
+	t_stack *node;
+
+	init_sorted(data);
+	i = 0;
+	node = *data->stack_a;
+	while (i < data->size)
+	{
+		node = *data->stack_a;
+		while (data->sorted[i] != node->value)
+			node = node->next;
+		node->index = i;
 		i++;
 	}
 }
@@ -222,13 +242,12 @@ int get_cost(t_stack **stack, t_stack *node)
 
 	index = get_index(stack, node);
 	size = stack_size(*stack);
-	if (index >= size / 2)
+	if (index > size / 2)
 		return size - index;
 	else
 		return index;
 
 }
-
 
 t_stack *get_element_in_range(t_stack **stack, int min, int max)
 {
@@ -308,7 +327,7 @@ void push_rotate_a(t_data *data)
 		return;
 	index = get_index(data->stack_a, target);
 	size = stack_size(*data->stack_a);
-	if (index >= size / 2)
+	if (index > size / 2)
 		rra(data);
 	else
 		ra(data);
@@ -324,7 +343,7 @@ void merge_back(t_data *data)
 		while (*data->stack_b != highest)
 		{
 			size = stack_size(*data->stack_b);
-			if (get_index(data->stack_b, highest) >= size / 2)
+			if (get_index(data->stack_b, highest) > size / 2)
 				rrb(data);
 			else
 				rb(data);
@@ -351,13 +370,9 @@ void sort(t_data *data)
 {
 	int i;
 
-	data->sorted = malloc(sizeof(int) * data->size);
-	init_sorted(data);
 	i = 0;
 	while (i < data->chunks)
 	{
-		// printf("chunks:	%d\n", data->chunks);
-		// exit(132);
 		data->min = data->sorted[i * data->chunk_size];
 		if (i == data->chunks - 1)
 			data->max = data->sorted[data->size - 1];
@@ -385,18 +400,18 @@ int	main(int ac, char **av)
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, NULL, data);
 	parse_input(ac, av, data);
-	if (!stack_is_sorted(*data->stack_a))
-	{
-		if (stack_size(*data->stack_a) == 2)
-			sa(data);
-		else if (stack_size(*data->stack_a) == 3)
-			sort_3(data);
-		else if (stack_size(*data->stack_a) <= 5)
-			sort_5(data);
-		else
-			sort(data);
-	}
-	// print_stack(data->stack_a, 'a');
+	// if (!stack_is_sorted(*data->stack_a))
+	// {
+	// 	if (stack_size(*data->stack_a) == 2)
+	// 		sa(data);
+	// 	else if (stack_size(*data->stack_a) == 3)
+	// 		sort_3(data);
+	// 	else if (stack_size(*data->stack_a) <= 5)
+	// 		sort_5(data);
+	// 	else
+	// 		sort(data);
+	// }
+	print_stack(data->stack_a, 'a');
 	// print_stack(data->stack_b, 'b');
 	exit_program(SUCCESS, NULL, data);
 }

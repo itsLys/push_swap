@@ -20,6 +20,7 @@
 typedef struct s_stack
 {
 	long	value;
+	int		index;
 	struct s_stack *next;
 	// struct s_stack_item previous;
 }			t_stack;
@@ -30,6 +31,7 @@ typedef struct s_data
 	t_stack	**stack_b;
 	int		min;
 	int		max;
+	int		delim;
 	int		size;
 	int		*sorted;
 	int		chunks;
@@ -57,4 +59,6 @@ void		stack_add_back(t_stack **stack, t_stack *new);
 void		stack_add_front(t_stack **lst, t_stack *new);
 t_stack		*stack_last(t_stack *node);
 void 		clear_stack(t_stack **stack);
+
+void	set_index(t_data *data);
 #endif // !PUSH_SWAP_H

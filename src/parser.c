@@ -104,4 +104,5 @@ void	parse_input(int ac, char **av, t_data *data)
 	else
 		data->chunks = 11;
 	data->chunk_size = data->size / data->chunks;
+	set_index(data);
 }

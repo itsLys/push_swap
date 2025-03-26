@@ -79,6 +79,18 @@ t_stack *find_highest(t_stack *stack)
 	return highest;
 }
 
+void sort_3(t_data *data)
+{
+	t_stack **stack_a;
+
+	stack_a = data->stack_a;
+	if (*stack_a == find_highest(*stack_a))
+		ra(data);
+	else if ((*stack_a)->next == find_highest(*stack_a))
+		rra(data);
+	if ((*stack_a)->value > (*stack_a)->next->value)
+		sa(data);
+}
 
 t_stack *find_smallest(t_stack *stack)
 {
@@ -100,7 +112,10 @@ t_stack *find_sec_smallest(t_stack *stack)
 	t_stack	*sec_lowest;
 
 	lowest = find_smallest(stack);
-	sec_lowest = stack;
+	if (stack != lowest)
+		sec_lowest = stack;
+	else
+		sec_lowest = stack->next;
 	while (stack)
 	{
 		if ((stack->value < sec_lowest->value) && stack != lowest)
@@ -110,18 +125,6 @@ t_stack *find_sec_smallest(t_stack *stack)
 	return sec_lowest;
 }
 
-void sort_3(t_data *data)
-{
-	t_stack **stack_a;
-
-	stack_a = data->stack_a;
-	if (*stack_a == find_highest(*stack_a))
-		ra(data);
-	else if ((*stack_a)->next == find_highest(*stack_a))
-		rra(data);
-	if ((*stack_a)->value > (*stack_a)->next->value)
-		sa(data);
-}
 
 void sort_5(t_data *data)
 {
@@ -241,73 +244,71 @@ t_stack *get_element_in_range(t_stack **stack, int min, int max)
 	return node;
 }
 
-// t_stack *get_best_in_range(t_stack **stack, int min, int max)
-// {
-// 	t_stack *node1;
-// 	t_stack *tmp;
-// 	t_stack *node2;
-//
-// 	node1 = get_element_in_range(stack, min, max);
-// 	if (node1 == NULL)
-// 		return NULL;
-// 	tmp = get_element_in_range(&(node1->next), min, max);
-// 	if (tmp == NULL)
-// 		return node1;
-// 	while (tmp)
-// 	{
-// 		node2 = tmp;
-// 		tmp = get_element_in_range(&(node2->next), min, max);
-// 	}
-// 	if (get_cost(stack, node1) < get_cost(stack, node2))
-// 		return node1;
-// 	else
-// 		return node2;
-// }
-//
 t_stack *get_best_in_range(t_stack **stack, int min, int max)
 {
-    t_stack *best = NULL;
-    int best_cost = 0;
-    int cost;
-    t_stack *tmp = *stack;
+	t_stack *node1;
+	t_stack *tmp;
+	t_stack *node2;
 
-    while (tmp)
-    {
-        if (tmp->value >= min && tmp->value <= max)
-        {
-            cost = get_cost(stack, tmp);
-            if (best == NULL || cost < best_cost)
-            {
-                best = tmp;
-                best_cost = cost;
-            }
-        }
-        tmp = tmp->next;
-    }
-    return best;
+	node1 = get_element_in_range(stack, min, max);
+	if (node1 == NULL)
+		return NULL;
+	tmp = get_element_in_range(&(node1->next), min, max);
+	if (tmp == NULL)
+		return node1;
+	while (tmp)
+	{
+		node2 = tmp;
+		tmp = get_element_in_range(&(node2->next), min, max);
+	}
+	if (get_cost(stack, node1) <= get_cost(stack, node2))
+		return node1;
+	else
+		return node2;
 }
+
+// t_stack *get_best_in_range(t_stack **stack, int min, int max)
+// {
+// 	t_stack *best = NULL;
+// 	int best_cost = 0;
+// 	int cost;
+// 	t_stack *tmp = *stack;
+//
+// 	while (tmp)
+// 	{
+// 		if (tmp->value >= min && tmp->value <= max)
+// 		{
+// 			cost = get_cost(stack, tmp);
+// 			if (best == NULL || cost < best_cost)
+// 			{
+// 				best = tmp;
+// 				best_cost = cost;
+// 			}
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return best;
+// }
 
 void push_rotate_a(t_data *data)
 {
-	// While the top element is in range, push it immediately.
+	t_stack *target;
+	int index;
+	int size;
+
 	while (*data->stack_a &&
 		((*data->stack_a)->value >= data->min && (*data->stack_a)->value <= data->max))
 	{
 		pb(data);
-		// Optional: if the element you just pushed is in the lower half of the current chunk,
-		// rotate B so that these smaller elements move toward the bottom.
 		if (*data->stack_b && ((*data->stack_b)->value < (data->min + data->max) / 2))
 			rb(data);
 	}
-
-	// Now, if no eligible element is at the top, find the best candidate in the stack.
-	t_stack *target = get_best_in_range(data->stack_a, data->min, data->max);
+	target = get_best_in_range(data->stack_a, data->min, data->max);
 	if (!target)
-		return; // No element in range remains
-
-	int index = get_index(data->stack_a, target);
-	int size = stack_size(*data->stack_a);
-	if (index > size / 2)
+		return;
+	index = get_index(data->stack_a, target);
+	size = stack_size(*data->stack_a);
+	if (index >= size / 2)
 		rra(data);
 	else
 		ra(data);
@@ -323,7 +324,7 @@ void merge_back(t_data *data)
 		while (*data->stack_b != highest)
 		{
 			size = stack_size(*data->stack_b);
-			if (get_index(data->stack_b, highest) > size / 2)
+			if (get_index(data->stack_b, highest) >= size / 2)
 				rrb(data);
 			else
 				rb(data);
@@ -355,6 +356,8 @@ void sort(t_data *data)
 	i = 0;
 	while (i < data->chunks)
 	{
+		// printf("chunks:	%d\n", data->chunks);
+		// exit(132);
 		data->min = data->sorted[i * data->chunk_size];
 		if (i == data->chunks - 1)
 			data->max = data->sorted[data->size - 1];

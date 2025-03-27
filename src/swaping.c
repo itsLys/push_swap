@@ -12,13 +12,24 @@
 
 #include "push_swap.h"
 
-void	stack_swap(t_stack **head)
+void	stack_swap(t_data *data)
 {
+
+	t_stack **head;
 	t_stack	*first;
 	t_stack	*second;
 
-	if (!head || !*head || stack_size(*head) <= 1)
-		return ;
+	head = NULL;
+	if (data->stack_type == 'a')
+	{
+		head = data->stack_a;
+		ft_printf("sa\n");
+	}
+	else
+	{
+		head = data->stack_b;
+		ft_printf("sb\n");
+	}
 	first = *head;
 	second = first->next;
 
@@ -29,18 +40,20 @@ void	stack_swap(t_stack **head)
 
 void	sa(t_data *data)
 {
-	stack_swap(data->stack_a);
-	ft_printf("sa\n");
+	data->stack_type = 'a';
+	stack_swap(data);
 }
 
 void	sb(t_data *data)
 {
-	stack_swap(data->stack_b);
-	ft_printf("sb\n");
+	data->stack_type = 'b';
+	stack_swap(data);
 }
 
 void	ss(t_data *data)
 {
+	data->stack_type = 'a';
 	sa(data);
+	data->stack_type = 'b';
 	sb(data);
 }

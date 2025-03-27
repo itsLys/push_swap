@@ -14,36 +14,51 @@
 #include "push_swap.h"
 #include <unistd.h>
 
-void	stack_reverse_rotate(t_stack **head)
+void	stack_reverse_rotate(t_data *data)
 {
+	t_stack **head;
 	t_stack	*last;
 	t_stack	**list;
 
-	if (head == NULL || stack_size(*head) <= 1)
-		return ;
-	last = stack_last(*head);
-	last->next = *head;
-	list = head;
-	while ((*list)->next != last)
-		*list = (*list)->next;
-	(*list)->next = NULL;
-	*head = last;
+	head = NULL;
+	if (data->stack_type == 'a')
+	{
+		head = data->stack_a;
+		ft_printf("rra\n");
+	}
+	else if (data->stack_type == 'b')
+	{
+		head = data->stack_b;
+		ft_printf("rrb\n");
+	}
+	if (head && stack_size(*head) > 1)
+	{
+		last = stack_last(*head);
+		last->next = *head;
+		list = head;
+		while ((*list)->next != last)
+			*list = (*list)->next;
+		(*list)->next = NULL;
+		*head = last;
+	}
 }
 
 void	rra(t_data *data)
 {
-	stack_reverse_rotate(data->stack_a);
-	ft_printf("rra\n");
+	data->stack_type = 'a';
+	stack_reverse_rotate(data);
 }
 
 void	rrb(t_data *data)
 {
-	stack_reverse_rotate(data->stack_b);
-	ft_printf("rrb\n");
+	data->stack_type = 'b';
+	stack_reverse_rotate(data);
 }
 
 void	rrr(t_data *data)
 {
+	data->stack_type = 'b';
 	rra(data);
+	data->stack_type = 'b';
 	rrb(data);
 }

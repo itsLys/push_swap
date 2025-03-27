@@ -36,12 +36,17 @@ typedef struct s_data
 	int		*sorted;
 	int		chunks;
 	int		chunk_size;
-	int		middle;
+	int		index_pos;
+	int		index;
+	char	stack_type;
 }			t_data;
 void		parse_input(int ac, char **av, t_data *data);
 void		exit_program(int status, void **list, t_data *data);
 void		handle_error(void **list, t_data *data);
 
+void		stack_push(t_data *data);
+void		stack_rotate(t_data *data);
+void		stack_reverse_rotate(t_data *data);
 void		sa(t_data *data);
 void		sb(t_data *data);
 void		ss(t_data *data);

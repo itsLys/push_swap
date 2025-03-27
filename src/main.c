@@ -24,8 +24,8 @@ void	print_stack(t_stack **stack, char c)
 	printf("stack %c:	\n", c);
 	while (node)
 	{
-		printf("%d", node->index);
-		printf(" %ld\n", node->value);
+		printf("index:	%d", node->index);
+		printf(" value:	%ld\n", node->value);
 		node = node->next;
 		// if (node)
 		// 	printf(", ");
@@ -204,7 +204,6 @@ void	set_index(t_data *data)
 }
 
 
-//
 // int get_node_index(t_stack *stack, t_stack *node)
 // {
 // 	int i;
@@ -220,7 +219,7 @@ void	set_index(t_data *data)
 // }
 //
 
-int get_index(t_stack **stack, t_stack *node)
+int get_position(t_stack **stack, t_stack *node)
 {
 	t_stack *tmp;
 	int i;
@@ -240,7 +239,7 @@ int get_cost(t_stack **stack, t_stack *node)
 	int index;
 	int size;
 
-	index = get_index(stack, node);
+	index = get_position(stack, node);
 	size = stack_size(*stack);
 	if (index > size / 2)
 		return size - index;
@@ -325,31 +324,12 @@ void push_rotate_a(t_data *data)
 	target = get_best_in_range(data->stack_a, data->min, data->max);
 	if (!target)
 		return;
-	index = get_index(data->stack_a, target);
+	index = get_position(data->stack_a, target);
 	size = stack_size(*data->stack_a);
 	if (index > size / 2)
 		rra(data);
 	else
 		ra(data);
-}
-void merge_back(t_data *data)
-{
-	t_stack *highest;
-	int size;
-
-	while (stack_size(*data->stack_b))
-	{
-		highest = find_highest(*data->stack_b);
-		while (*data->stack_b != highest)
-		{
-			size = stack_size(*data->stack_b);
-			if (get_index(data->stack_b, highest) > size / 2)
-				rrb(data);
-			else
-				rb(data);
-		}
-		pa(data);
-	}
 }
 
 int has_element_in_range(t_stack **stack, int min, int max)
@@ -366,23 +346,95 @@ int has_element_in_range(t_stack **stack, int min, int max)
 	return FALSE;
 }
 
+void set_data(t_data *data)
+{
+	int div;
+
+	// NOTE: changes based on size of stack_a
+	div = 4;
+	data->chunk_size = (stack_size(*data->stack_a) - 5) / div + 1;
+	data->min = stack_size(*data->stack_b);
+	data->max = data->min + data->chunk_size - 1;
+	data->delim = (data->max + data->min) / 2;
+
+}
+
+void merge_back(t_data *data)
+{
+	t_stack *highest;
+	int size;
+
+	while (stack_size(*data->stack_b))
+	{
+		highest = find_highest(*data->stack_b);
+		while (*data->stack_b != highest)
+		{
+			size = stack_size(*data->stack_b);
+			if (get_position(data->stack_b, highest) > size / 2)
+				rrb(data);
+			else
+				rb(data);
+		}
+		pa(data);
+	}
+}
+
+void put_elemnt_index_first(t_data *data)
+{
+	t_stack **stack;
+
+	stack = NULL;
+	if (data->stack_type == 'a')
+		stack = data->stack_a;
+	else if (data->stack_type == 'b')
+		stack = data->stack_b;
+	if (data->index_pos < stack_size(*stack) / 2 + 1)
+	{
+		while (data->index != (*stack)->index)
+			stack_rotate(data);
+	}
+	else
+	{
+		while (data->index != (*stack)->index)
+			stack_reverse_rotate(data);
+	}
+	stack_push(data);
+	if (data->stack_type == 'a')
+		data->stack_type = 'b';
+	else
+		data->stack_type = 'a';
+	if ((*stack)->index > data->delim)
+		stack_rotate(data);
+}
+
+void push_chunk_b(t_data *data)
+{
+	t_stack *tmp;
+
+	data->stack_type = 'a';
+	tmp = *data->stack_b;
+	data->index_pos = 0;
+	while (tmp)
+	{
+		if (tmp->index <= data->max)
+			break ;
+		data->index_pos++;
+		data->index = tmp->index;
+		tmp = tmp->next;
+	}
+	put_elemnt_index_first(data);
+}
+
+
 void sort(t_data *data)
 {
-	int i;
-
-	i = 0;
-	while (i < data->chunks)
+	while (stack_size(*data->stack_a) > 5)
 	{
-		data->min = data->sorted[i * data->chunk_size];
-		if (i == data->chunks - 1)
-			data->max = data->sorted[data->size - 1];
-		else
-			data->max = data->sorted[(i + 1) * data->chunk_size - 1];
-		while (has_element_in_range(data->stack_a, data->min, data->max))
-			push_rotate_a(data);
-		i++;
+		set_data(data);
+		push_chunk_b(data);
 	}
-	merge_back(data);
+	sort_5(data);
+	// merge_back(data);
 }
 
 // NOTE: sorting utils end
@@ -400,18 +452,21 @@ int	main(int ac, char **av)
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, NULL, data);
 	parse_input(ac, av, data);
-	// if (!stack_is_sorted(*data->stack_a))
-	// {
-	// 	if (stack_size(*data->stack_a) == 2)
-	// 		sa(data);
-	// 	else if (stack_size(*data->stack_a) == 3)
-	// 		sort_3(data);
-	// 	else if (stack_size(*data->stack_a) <= 5)
-	// 		sort_5(data);
-	// 	else
-	// 		sort(data);
-	// }
 	print_stack(data->stack_a, 'a');
-	// print_stack(data->stack_b, 'b');
+	print_stack(data->stack_b, 'b');
+	printf("after\n");
+	if (!stack_is_sorted(*data->stack_a))
+	{
+		if (stack_size(*data->stack_a) == 2)
+			sa(data);
+		else if (stack_size(*data->stack_a) == 3)
+			sort_3(data);
+		else if (stack_size(*data->stack_a) <= 5)
+			sort_5(data);
+		else
+			sort(data);
+	}
+	print_stack(data->stack_a, 'a');
+	print_stack(data->stack_b, 'b');
 	exit_program(SUCCESS, NULL, data);
 }

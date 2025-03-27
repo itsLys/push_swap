@@ -201,149 +201,7 @@ void	set_index(t_data *data)
 		node->index = i;
 		i++;
 	}
-}
-
-
-// int get_node_index(t_stack *stack, t_stack *node)
-// {
-// 	int i;
-//
-// 	i = 0;
-// 	while (stack)
-// 	{
-// 		if (stack == node)
-// 			return i;
-// 		i++;
-// 	}
-// 	return ERROR;
-// }
-//
-
-int get_position(t_stack **stack, t_stack *node)
-{
-	t_stack *tmp;
-	int i;
-
-	i = 0;
-	tmp = *stack;
-	while (tmp != node)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return i;
-}
-
-int get_cost(t_stack **stack, t_stack *node)
-{
-	int index;
-	int size;
-
-	index = get_position(stack, node);
-	size = stack_size(*stack);
-	if (index > size / 2)
-		return size - index;
-	else
-		return index;
-
-}
-
-t_stack *get_element_in_range(t_stack **stack, int min, int max)
-{
-	t_stack *node;
-
-	node = *stack;
-	while (node)
-	{
-		if (node->value >= min && node->value <= max)
-			break;
-		node = node->next;
-	}
-	return node;
-}
-
-t_stack *get_best_in_range(t_stack **stack, int min, int max)
-{
-	t_stack *node1;
-	t_stack *tmp;
-	t_stack *node2;
-
-	node1 = get_element_in_range(stack, min, max);
-	if (node1 == NULL)
-		return NULL;
-	tmp = get_element_in_range(&(node1->next), min, max);
-	if (tmp == NULL)
-		return node1;
-	while (tmp)
-	{
-		node2 = tmp;
-		tmp = get_element_in_range(&(node2->next), min, max);
-	}
-	if (get_cost(stack, node1) <= get_cost(stack, node2))
-		return node1;
-	else
-		return node2;
-}
-
-// t_stack *get_best_in_range(t_stack **stack, int min, int max)
-// {
-// 	t_stack *best = NULL;
-// 	int best_cost = 0;
-// 	int cost;
-// 	t_stack *tmp = *stack;
-//
-// 	while (tmp)
-// 	{
-// 		if (tmp->value >= min && tmp->value <= max)
-// 		{
-// 			cost = get_cost(stack, tmp);
-// 			if (best == NULL || cost < best_cost)
-// 			{
-// 				best = tmp;
-// 				best_cost = cost;
-// 			}
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return best;
-// }
-
-void push_rotate_a(t_data *data)
-{
-	t_stack *target;
-	int index;
-	int size;
-
-	while (*data->stack_a &&
-		((*data->stack_a)->value >= data->min && (*data->stack_a)->value <= data->max))
-	{
-		pb(data);
-		if (*data->stack_b && ((*data->stack_b)->value < (data->min + data->max) / 2))
-			rb(data);
-	}
-	target = get_best_in_range(data->stack_a, data->min, data->max);
-	if (!target)
-		return;
-	index = get_position(data->stack_a, target);
-	size = stack_size(*data->stack_a);
-	if (index > size / 2)
-		rra(data);
-	else
-		ra(data);
-}
-
-int has_element_in_range(t_stack **stack, int min, int max)
-{
-	t_stack *node;
-
-	node = *stack;
-	while (node)
-	{
-		if (node->value >= min && node->value <= max)
-			return TRUE;
-		node = node->next;
-	}
-	return FALSE;
+	stack_last(*data->stack_a)->index = -1;
 }
 
 void set_data(t_data *data)
@@ -363,65 +221,99 @@ void set_data(t_data *data)
 
 }
 
-void merge_back(t_data *data)
+int has_element_in_stack(int index, t_stack *node)
 {
-	t_stack *highest;
-	int size;
-
-	while (stack_size(*data->stack_b))
+	while (node)
 	{
-		highest = find_highest(*data->stack_b);
-		while (*data->stack_b != highest)
-		{
-			size = stack_size(*data->stack_b);
-			if (get_position(data->stack_b, highest) > size / 2)
-				rrb(data);
-			else
-				rb(data);
-		}
-		pa(data);
+		if (node->index == index)
+			return TRUE;
+		node = node->next;
 	}
+	return FALSE;
+}
+
+int find_index(int index, t_stack *node)
+{
+	int i;
+
+	i = 0;
+	while (node->index != index)
+	{
+		printf("%d\n", i);
+		node = node->next;
+		i++;
+	}
+	return i;
+}
+
+void push_rotate_elemnt(t_stack **stack, t_data *data)
+{
+	stack_push(data);
+	print_stack(stack, 'a');
+	printf("stack %p\n", stack);
+	printf("stack %c\n", data->stack_type);
+	if (data->stack_type == 'a')
+		data->stack_type = 'b';
+	else
+		data->stack_type = 'a';
+	if ((*stack)->index > data->delim)
+		stack_rotate(data);
 }
 
 void put_elemnt_index_first(t_data *data)
 {
 	t_stack **stack;
+	int i;
 
 	stack = NULL;
 	if (data->stack_type == 'a')
 		stack = data->stack_a;
 	else if (data->stack_type == 'b')
 		stack = data->stack_b;
-	// printf("stack type: %c\n" ,data->stack_type);
-	// printf("index_pos: %d | pos of half stack: %d\n", data->index_pos, stack_size(*stack)/2 + 1);
 	if (data->index_pos < stack_size(*stack) / 2 - 1)
 	{
-	//	while (data->index != (*stack)->index) {
-			// printf("here :/\n");
-		for (int i = 0; i < data->index_pos; i++){
+		i = -1;
+		while (++i < data->index_pos)
 			stack_rotate(data);
-		}
 	}
 	else
 	{
-		//while (data->index != (*stack)->index)
-
-		for (int i = 0; i < stack_size(*stack) - data->index_pos; i++)
+		i = -1;
+		while (++i < stack_size(*stack) - data->index_pos)
 			stack_reverse_rotate(data);
 	}
-
-	// other function body: push into other stack
-	stack_push(data);
-	// print_stack(data->stack_a, 'a');
-	// print_stack(data->stack_b, 'b');
-	if (data->stack_type == 'a')
-		data->stack_type = 'b';
-	else
-		data->stack_type = 'a';
-	// printf("---------\nelem_index: %d  delim: %d\n", (*stack)->index, data->delim);
-	if ((*stack)->index > data->delim)
-		stack_rotate(data);
+	push_rotate_elemnt(stack, data);
 }
+
+void merge_back(t_data *data)
+{
+	int top_a;
+	int top_b;
+
+	while (stack_size(*data->stack_b))
+	{
+		data->stack_type = 'b';
+		top_a = (*data->stack_a)->index;
+		top_b = (*data->stack_b)->index;
+		if (top_a == top_b - 1)
+			stack_push(data);
+		else if (!has_element_in_stack(top_a - 1, *data->stack_b))
+			stack_reverse_rotate(data);
+		else if (top_b < top_a && top_b > stack_last(*data->stack_a)->index)
+		{
+			pa(data);
+			ra(data);
+		}
+		else if (has_element_in_stack(top_a - 1, *data->stack_b))
+		{
+			data->index_pos = find_index(top_a - 1, *data->stack_b);
+			data->stack_type = 'b';
+			put_elemnt_index_first(data);
+			// find it, put on top, pa
+		}
+	}
+}
+
 
 void push_chunk_b(t_data *data)
 {

@@ -356,6 +356,10 @@ void set_data(t_data *data)
 	data->min = stack_size(*data->stack_b);
 	data->max = data->min + data->chunk_size - 1;
 	data->delim = (data->max + data->min) / 2;
+	// printf("chunk size:	%d\n", data->chunk_size);
+	// printf("min:		%d\n", data->min);
+	// printf("max:		%d\n", data->max);
+	// printf("delim:		%d\n", data->delim);
 
 }
 
@@ -388,21 +392,33 @@ void put_elemnt_index_first(t_data *data)
 		stack = data->stack_a;
 	else if (data->stack_type == 'b')
 		stack = data->stack_b;
-	if (data->index_pos < stack_size(*stack) / 2 + 1)
+	// printf("stack type: %c\n" ,data->stack_type);
+	// printf("index_pos: %d | pos of half stack: %d\n", data->index_pos, stack_size(*stack)/2 + 1);
+	if (data->index_pos < stack_size(*stack) / 2 - 1)
 	{
-		while (data->index != (*stack)->index)
+	//	while (data->index != (*stack)->index) {
+			// printf("here :/\n");
+		for (int i = 0; i < data->index_pos; i++){
 			stack_rotate(data);
+		}
 	}
 	else
 	{
-		while (data->index != (*stack)->index)
+		//while (data->index != (*stack)->index)
+
+		for (int i = 0; i < stack_size(*stack) - data->index_pos; i++)
 			stack_reverse_rotate(data);
 	}
+
+	// other function body: push into other stack
 	stack_push(data);
+	// print_stack(data->stack_a, 'a');
+	// print_stack(data->stack_b, 'b');
 	if (data->stack_type == 'a')
 		data->stack_type = 'b';
 	else
 		data->stack_type = 'a';
+	// printf("---------\nelem_index: %d  delim: %d\n", (*stack)->index, data->delim);
 	if ((*stack)->index > data->delim)
 		stack_rotate(data);
 }
@@ -412,8 +428,9 @@ void push_chunk_b(t_data *data)
 	t_stack *tmp;
 
 	data->stack_type = 'a';
-	tmp = *data->stack_b;
+	tmp = *data->stack_a;
 	data->index_pos = 0;
+	data->index = -2;
 	while (tmp)
 	{
 		if (tmp->index <= data->max)
@@ -431,10 +448,11 @@ void sort(t_data *data)
 	while (stack_size(*data->stack_a) > 5)
 	{
 		set_data(data);
-		push_chunk_b(data);
+		for (int i = 0; i < data->chunk_size; i++)
+			push_chunk_b(data);
 	}
 	sort_5(data);
-	// merge_back(data);
+	merge_back(data);
 }
 
 // NOTE: sorting utils end
@@ -452,9 +470,9 @@ int	main(int ac, char **av)
 	if (data->stack_a == NULL || data->stack_b == NULL)
 		exit_program(FAILIURE, NULL, data);
 	parse_input(ac, av, data);
-	print_stack(data->stack_a, 'a');
-	print_stack(data->stack_b, 'b');
-	printf("after\n");
+	// print_stack(data->stack_a, 'a');
+	// print_stack(data->stack_b, 'b');
+	// printf("after\n");
 	if (!stack_is_sorted(*data->stack_a))
 	{
 		if (stack_size(*data->stack_a) == 2)
@@ -466,7 +484,7 @@ int	main(int ac, char **av)
 		else
 			sort(data);
 	}
-	print_stack(data->stack_a, 'a');
-	print_stack(data->stack_b, 'b');
+	// print_stack(data->stack_a, 'a');
+	// print_stack(data->stack_b, 'b');
 	exit_program(SUCCESS, NULL, data);
 }

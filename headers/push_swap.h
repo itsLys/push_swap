@@ -40,6 +40,10 @@ typedef struct s_data
 	int		index;
 	char	stack_type;
 }			t_data;
+
+void	print_stack(t_stack **stack, char c);
+//test
+
 void		parse_input(int ac, char **av, t_data *data);
 void		exit_program(int status, void **list, t_data *data);
 void		handle_error(void **list, t_data *data);

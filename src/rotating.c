@@ -39,20 +39,26 @@ void	stack_rotate(t_data *data)
 
 void	ra(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'a';
 	stack_rotate(data);
+	data->stack_type = prev;
 }
 
 void	rb(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'b';
 	stack_rotate(data);
+	data->stack_type = prev;
 }
 
 void	rr(t_data *data)
 {
-	data->stack_type = 'a';
 	ra(data);
-	data->stack_type = 'b';
 	rb(data);
 }

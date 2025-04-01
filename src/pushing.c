@@ -42,12 +42,20 @@ void	stack_push(t_data *data)
 
 void	pa(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'b';
 	stack_push(data);
+	data->stack_type = prev;
 }
 
 void	pb(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'a';
 	stack_push(data);
+	data->stack_type = prev;
 }

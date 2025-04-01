@@ -45,20 +45,26 @@ void	stack_reverse_rotate(t_data *data)
 
 void	rra(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'a';
 	stack_reverse_rotate(data);
+	data->stack_type = prev;
 }
 
 void	rrb(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'b';
 	stack_reverse_rotate(data);
+	data->stack_type = prev;
 }
 
 void	rrr(t_data *data)
 {
-	data->stack_type = 'b';
 	rra(data);
-	data->stack_type = 'b';
 	rrb(data);
 }

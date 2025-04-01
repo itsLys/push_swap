@@ -40,20 +40,26 @@ void	stack_swap(t_data *data)
 
 void	sa(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'a';
 	stack_swap(data);
+	data->stack_type = prev;
 }
 
 void	sb(t_data *data)
 {
+	char prev;
+
+	prev = data->stack_type;
 	data->stack_type = 'b';
 	stack_swap(data);
+	data->stack_type = prev;
 }
 
 void	ss(t_data *data)
 {
-	data->stack_type = 'a';
 	sa(data);
-	data->stack_type = 'b';
 	sb(data);
 }

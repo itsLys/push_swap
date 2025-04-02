@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strisdecimal.c                                  :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 07:43:09 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/18 07:43:18 by ihajji           ###   ########.fr       */
+/*   Created: 2025/04/02 12:02:40 by ihajji            #+#    #+#             */
+/*   Updated: 2025/04/02 15:30:59 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int	ft_strisdecimal(char *str)
+void	ft_swap(int *a, int *b)
 {
-	if (*str == '-' || *str == '+')
-		str++;
-	if (ft_isdigit(*str))
-		str++;
-	else
-		return (0);
-	while (ft_isdigit(*str))
-		str++;
-	return (!(*str));
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

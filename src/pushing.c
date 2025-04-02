@@ -6,56 +6,48 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:01:44 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/20 08:08:19 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 12:36:18 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
-void	stack_push(t_data *data)
+void	stack_push(char stack_type, t_data *data)
 {
 	t_stack	*node;
 	t_stack	*next;
-	t_stack **from;
-	t_stack **to;
+	t_stack	**from;
+	t_stack	**to;
 
 	from = NULL;
 	to = NULL;
-	if (data->stack_type == 'a')
+	if (stack_type == 'a')
+	{
+		from = data->stack_b;
+		to = data->stack_a;
+	}
+	else if (stack_type == 'b')
 	{
 		from = data->stack_a;
 		to = data->stack_b;
-		ft_printf("pb\n");
 	}
-	else if (data->stack_type == 'b')
+	if (stack_size(*from) > 0)
 	{
-
-		from = data->stack_b;
-		to = data->stack_a;
-		ft_printf("pa\n");
+		node = *from;
+		next = (*from)->next;
+		stack_add_front(to, node);
+		*from = next;
 	}
-	node = *from;
-	next = (*from)->next;
-	stack_add_front(to, node);
-	*from = next;
+	ft_printf("p%c\n", stack_type);
 }
 
 void	pa(t_data *data)
 {
-	char prev;
-
-	prev = data->stack_type;
-	data->stack_type = 'b';
-	stack_push(data);
-	data->stack_type = prev;
+	stack_push('a', data);
 }
 
 void	pb(t_data *data)
 {
-	char prev;
-
-	prev = data->stack_type;
-	data->stack_type = 'a';
-	stack_push(data);
-	data->stack_type = prev;
+	stack_push('b', data);
 }

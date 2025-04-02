@@ -54,8 +54,8 @@ long	ft_atol(const char *nptr)
 		if (n < prev)
 		{
 			if (sign == -1)
-				return (0);
-			return (-1);
+				return (LONG_MIN);
+			return (LONG_MAX);
 		}
 	}
 	return (n * sign);

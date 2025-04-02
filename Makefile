@@ -20,7 +20,11 @@ SRC			= main.c \
 			  reverse_rotating.c \
 			  rotating.c \
 			  swaping.c \
+			  push_swap.c \
+			  sort.c \
+			  sort_utils.c \
 			  stack_utils.c 
+
 SRC_BONUS	= checker_bonus.c \
 			  main_bonus.c \
 			  utils_bonus.c \

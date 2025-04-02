@@ -6,28 +6,22 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:02:35 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/20 08:08:05 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 12:28:34 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	stack_rotate(t_data *data)
+void	stack_rotate(char stack_type, t_data *data)
 {
 	t_stack	**head;
 	t_stack	*first;
 
 	head = NULL;
-	if (data->stack_type == 'a')
-	{
+	if (stack_type == 'a')
 		head = data->stack_a;
-		ft_printf("ra\n");
-	}
-	else if (data->stack_type == 'b')
-	{
+	else if (stack_type == 'b')
 		head = data->stack_b;
-		ft_printf("rb\n");
-	}
 	if (head && stack_size(*head) > 1)
 	{
 		first = *head;
@@ -35,26 +29,17 @@ void	stack_rotate(t_data *data)
 		stack_last(*head)->next = first;
 		first->next = NULL;
 	}
+	ft_printf("r%c\n", stack_type);
 }
 
 void	ra(t_data *data)
 {
-	char prev;
-
-	prev = data->stack_type;
-	data->stack_type = 'a';
-	stack_rotate(data);
-	data->stack_type = prev;
+	stack_rotate('a', data);
 }
 
 void	rb(t_data *data)
 {
-	char prev;
-
-	prev = data->stack_type;
-	data->stack_type = 'b';
-	stack_rotate(data);
-	data->stack_type = prev;
+	stack_rotate('b', data);
 }
 
 void	rr(t_data *data)

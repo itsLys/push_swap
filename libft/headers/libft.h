@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 11:50:35 by ihajji            #+#    #+#             */
-/*   Updated: 2025/03/19 10:10:33 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:31:30 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define LIBFT_H
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define STDIN 0
 # define STDOUT 1
@@ -36,6 +37,7 @@ long				ft_atol(const char *nptr);
 double				ft_atof(char *str);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
+void				ft_swap(int *a, int *b);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);

@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/02 12:15:04 by ihajji            #+#    #+#             */
+/*   Updated: 2025/04/02 12:15:04 by ihajji           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void clear_stack(t_stack **stack)
+void	clear_stack(t_stack **stack)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	if (!stack || !*stack)
 		return ;
-
 	while (*stack)
 	{
 		tmp = (*stack)->next;
@@ -16,12 +27,12 @@ void clear_stack(t_stack **stack)
 	*stack = NULL;
 }
 
-t_stack *stack_last(t_stack *node)
+t_stack	*stack_last(t_stack *node)
 {
 	if (node)
 		while (node->next)
 			node = node->next;
-	return node;
+	return (node);
 }
 
 void	stack_add_front(t_stack **lst, t_stack *new)
@@ -38,9 +49,9 @@ void	stack_add_front(t_stack **lst, t_stack *new)
 	*lst = new;
 }
 
-void stack_add_back(t_stack **stack, t_stack *new)
+void	stack_add_back(t_stack **stack, t_stack *new)
 {
-	t_stack *last;
+	t_stack	*last;
 
 	if (!new || !stack)
 		return ;

@@ -215,12 +215,12 @@ void set_data(t_data *data)
 
 	// NOTE: changes based on size of stack_a
 	div = 0;
-	if (data->size - 5 <= 100)
+	if (data->size<= 100)
 		div = 5;
 	else if (data->size - 5 > 100)
 		div = 12;
 	// data->chunk_size = (stack_size(*data->stack_a) - 5) / div + 1;
-	data->chunk_size = (data->size - 5) / div ;
+	data->chunk_size = data->size  / div ;
 	data->min = stack_size(*data->stack_b);
 	data->max = data->min + data->chunk_size - 1;
 	data->delim = (data->max + data->min) / 2;
@@ -312,7 +312,6 @@ void merge_back(t_data *data)
 			pa(data);
 		else if (!has_element_in_stack(top_a - 1, *data->stack_b))
 		{
-
 		rra(data);
 	}
 		else if (top_b < top_a && top_b > stack_last(*data->stack_a)->index)
@@ -359,15 +358,15 @@ void sort(t_data *data)
 {
 	int position;
 
-	while (stack_size(*data->stack_a) > 5)
+	while (1)
 	{
 		set_data(data);
 		for (int i = 0; i < data->chunk_size; i++)
-		{
 			push_chunk_b(data);
-		}
+		if (stack_size(*data->stack_a) == 0)
+			break;
 	}
-	sort_5(data);
+	// sort_5(data);
 	merge_back(data);
 	data->stack_type = 'a';
 	position = find_index(0, *data->stack_a);

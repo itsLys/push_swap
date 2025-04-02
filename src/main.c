@@ -6,30 +6,27 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:44:09 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 12:28:37 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "push_swap.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 // test function
-void	print_stack(t_stack **stack, char c)
-{
-	t_stack	*node;
-
-	node = *stack;
-	printf("stack %c:	\n", c);
-	while (node)
-	{
-		printf("index:	%2d", node->index);
-		printf(" value:	%2ld\n", node->value);
-		node = node->next;
-	}
-	printf("start is sorted:	%d\n", stack_is_sorted(*stack));
-}
+// void	print_stack(t_stack **stack, char c)
+// {
+// 	t_stack	*node;
+//
+// 	node = *stack;
+// 	printf("stack %c:	\n", c);
+// 	while (node)
+// 	{
+// 		printf("index:	%2d", node->index);
+// 		printf(" value:	%2ld\n", node->value);
+// 		node = node->next;
+// 	}
+// 	printf("start is sorted:	%d\n", stack_is_sorted(*stack));
+// }
 
 void	exit_program(int status, void **list, t_data *data)
 {

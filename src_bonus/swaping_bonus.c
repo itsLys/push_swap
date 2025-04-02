@@ -1,52 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pushing.c                                          :+:      :+:    :+:   */
+/*   swaping_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/19 09:01:44 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
+/*   Created: 2025/03/19 09:01:03 by ihajji            #+#    #+#             */
+/*   Updated: 2025/04/02 15:55:15 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	stack_push(char stack_type, t_data *data)
+void	stack_swap(char stack_type, t_data *data)
 {
-	t_stack	*node;
-	t_stack	*next;
-	t_stack	**from;
-	t_stack	**to;
+	t_stack	**head;
+	t_stack	*first;
+	t_stack	*second;
 
-	from = NULL;
-	to = NULL;
+	head = NULL;
 	if (stack_type == 'a')
-	{
-		from = data->stack_b;
-		to = data->stack_a;
-	}
+		head = data->stack_a;
 	else if (stack_type == 'b')
+		head = data->stack_b;
+	if (head && stack_size(*head) > 1)
 	{
-		from = data->stack_a;
-		to = data->stack_b;
+		first = *head;
+		second = first->next;
+		first->next = second->next;
+		second->next = first;
+		*head = second;
 	}
-	if (stack_size(*from) > 0)
-	{
-		node = *from;
-		next = (*from)->next;
-		stack_add_front(to, node);
-		*from = next;
-	}
-	ft_printf("p%c\n", stack_type);
 }
 
-void	pa(t_data *data)
+void	sa(t_data *data)
 {
-	stack_push('a', data);
+	stack_swap('a', data);
 }
 
-void	pb(t_data *data)
+void	sb(t_data *data)
 {
-	stack_push('b', data);
+	stack_swap('b', data);
+}
+
+void	ss(t_data *data)
+{
+	sa(data);
+	sb(data);
 }

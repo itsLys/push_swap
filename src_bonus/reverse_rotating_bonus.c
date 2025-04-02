@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reverse_rotating.c                                 :+:      :+:    :+:   */
+/*   reverse_rotating_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:03:16 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:55:15 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	stack_reverse_rotate(char stack_type, t_data *data)
 		(*list)->next = NULL;
 		*head = last;
 	}
-	ft_printf("rr%c\n", stack_type);
 }
 
 void	rra(t_data *data)

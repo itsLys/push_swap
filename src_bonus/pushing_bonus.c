@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pushing.c                                          :+:      :+:    :+:   */
+/*   pushing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:01:44 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:55:15 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	stack_push(char stack_type, t_data *data)
 		stack_add_front(to, node);
 		*from = next;
 	}
-	ft_printf("p%c\n", stack_type);
 }
 
 void	pa(t_data *data)

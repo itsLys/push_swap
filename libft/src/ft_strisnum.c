@@ -6,11 +6,10 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:56:50 by ihajji            #+#    #+#             */
-/*   Updated: 2025/02/17 22:54:13 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_strisnum(char *str)
 {

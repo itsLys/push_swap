@@ -6,12 +6,11 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:46:20 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 12:28:37 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 static int	check_repitition(t_stack **list)
 {

@@ -5,3 +5,4 @@ pipex
 push_swap
 checker_linux
 compile_flags.txt
+*.old

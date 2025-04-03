@@ -6,7 +6,7 @@
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 09:11:34 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 15:30:27 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 17:30:56 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_data
 	int				size;
 	int				*sorted;
 	int				chunk_size;
+	char			*action;
 }					t_data;
 
 // void	print_stack(t_stack **stack, char c);

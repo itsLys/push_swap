@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihajji <ihajji@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:46:20 by ihajji            #+#    #+#             */
-/*   Updated: 2025/04/02 15:38:58 by ihajji           ###   ########.fr       */
+/*   Updated: 2025/04/02 17:08:53 by ihajji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,4 @@ void	parse_input(int ac, char **av, t_data *data)
 	if (check_values(data->stack_a) == ERROR)
 		handle_error(NULL, data);
 	data->size = stack_size(*data->stack_a);
-	set_index(data);
 }

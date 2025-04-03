@@ -26,11 +26,18 @@ SRC			= main.c \
 			  stack_utils.c 
 
 SRC_BONUS	= checker_bonus.c \
-			  main_bonus.c \
-			  utils_bonus.c \
-			  parser_bonus.c \
 			  get_next_line.c \
-			  get_next_line_utils.c
+			  get_next_line_utils.c \
+			  main_bonus.c \
+			  parser_bonus.c \
+              pushing_bonus.c \
+              reverse_rotating_bonus.c \
+              rotating_bonus.c \
+              sort_utils_bonus.c \
+              stack_utils_bonus.c \
+              swaping_bonus.c 
+
+
 OBJ_DIR		= obj
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 OBJ_BONUS	= $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.o))

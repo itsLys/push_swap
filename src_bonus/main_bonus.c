@@ -52,7 +52,7 @@ int	main(int ac, char **av)
 		exit_program(FAILIURE, NULL, data);
 	parse_input(ac, av, data);
 	read_stdin(data);
-	if (stack_is_sorted(*data->stack_a))
+	if (stack_is_sorted(*data->stack_a) && stack_size(*data->stack_b) == 0)
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
